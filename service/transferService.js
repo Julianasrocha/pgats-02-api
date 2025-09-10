@@ -1,22 +1,21 @@
-const { users } = require('../model/userModel');
 const { transfers } = require('../model/transferModel');
+const { users } = require('../model/userModel');
 
-function transfer({ from, to, value }) {
+function transferValue({ from, to, value }) {
   const sender = users.find(u => u.username === from);
   const recipient = users.find(u => u.username === to);
-  if (!sender || !recipient) throw new Error('Usuário remetente, destinatário não encontrado');
-  if (sender.saldo < value) throw new Error('Saldo insuficiente');
-  const isFavorecido = sender.favorecidos && sender.favorecidos.includes(to);
-  if (!isFavorecido && value >= 5000) throw new Error('Transferência acima de R$ 5.000,00 só para favorecidos');
-  sender.saldo -= value;
-  recipient.saldo += value;
-  const transfer = { from, to, value, date: new Date().toISOString() };
+  if (!sender || !recipient) throw new Error('Usuário remetente ou destinatário não encontrado');
+  if (recipient.favorecido !== true && value >= 5000) {
+    throw new Error('Transferências acima de R$ 5.000,00 só para favorecidos');
+  }
+  const transfer = { from, to, value, date: new Date() };
   transfers.push(transfer);
   return transfer;
 }
 
-function listTransfers() {
+function getTransfers() {
   return transfers;
 }
 
-module.exports = { transfer, listTransfers };
+module.exports = { transferValue, getTransfers };
+
