@@ -18,3 +18,4 @@ function getTransfers() {
 }
 
 module.exports = { transferValue, getTransfers };
+
