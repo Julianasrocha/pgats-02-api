@@ -11,39 +11,69 @@ const transferService = require('../../service/transferService')
 
 // Testes
 describe('Transfer Controller', () => {
-    describe('POST /transfer', () => {
+    describe('POST /transfers', () => {
         it('Quando informo destinatarios inexistente recebo 400', async () => {
             const resposta = await request(app)
-                .post('/transfer')
+                .post('/transfers')
                 .send({
-                    from: "Juliana",
-                    to: "Pedro",
+                    from: "julianaaaa",
+                    to: "pedro",
                     value: 100
 
                 });
+
             expect(resposta.status).to.equal(400);
             expect(resposta.body).to.have.property('error', 'Usuário remetente ou destinatário não encontrado');
 
         });
-        
+
         it('Usando Mocks: Quando informo destinatarios inexistente recebo 400', async () => {
             //mocar apenas a funcao transfer do service
             const transferServiceMock = sinon.stub(transferService, 'transfer')
             transferServiceMock.throws(new Error('Usuário remetente ou destinatário não encontrado'))
-          
+
             const resposta = await request(app)
-                .post('/transfer')
+                .post('/transfers')
                 .send({
                     from: "juliana",
                     to: "pedro",
                     value: 100
 
                 });
-            expect(resposta.status).to.equal(400);
-            
-            expect(resposta.body).to.have.property('error', 'Usuário remetente ou destinatário não encontrado')
-          
 
+            expect(resposta.status).to.equal(400);
+            expect(resposta.body).to.have.property('error', 'Usuário remetente ou destinatário não encontrado')
+
+            //Reseto o Mock
+            sinon.restore();
+
+        });
+
+        it('Usando Mocks: Quando informo valores válidos eu tenho sucesso com 201 CREATED', async () => {
+            // Mocar apenas a função transfer do Service
+            const transferServiceMock = sinon.stub(transferService, 'transfer');
+            transferServiceMock.returns({
+                from: "juliana",
+                to: "pedro",
+                value: 100,
+                date: new Date().toISOString()
+            });
+
+            const resposta = await request(app)
+                .post('/transfers')
+                .send({
+                    from: "juliana",
+                    to: "pedro",
+                    value: 100
+                });
+
+            expect(resposta.status).to.equal(201);
+            expect(resposta.body).to.have.property('from', 'juliana');
+            expect(resposta.body).to.have.property('to', 'pedro');
+            expect(resposta.body).to.have.property('value', 100);
+
+            //reseto o mock
+            sinon.restore();
         });
     });
 

@@ -13,7 +13,7 @@ app.post('/login', userController.login);
 app.get('/users', userController.getUsers);
 
 // Transfer routes
-app.post('/transfer', transferController.transfer);
+app.post('/transfers', transferController.transfers);
 app.get('/transfers', transferController.getTransfers);
 
 // Swagger endpoint

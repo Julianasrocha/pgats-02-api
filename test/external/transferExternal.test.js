@@ -8,8 +8,8 @@ describe('Transfer Controller', () => {
             const resposta = await request('http://localhost:3000')
                 .post('/transfer')
                 .send({
-                    from: "Juliana",
-                    to: "Pedro",
+                    from: "juliana",
+                    to: "pedro",
                     value: 100
 
                 });

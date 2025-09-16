@@ -3,7 +3,7 @@ const router = express.Router()
 
 const transferService = require('../service/transferService');
 
-exports.transfer = (req, res) => {
+exports.transfers = (req, res) => {
   const { from, to, value } = req.body;
   if (!from || !to || typeof value !== 'number') return res.status(400).json({ error: 'Usuário remetente ou destinatário não encontrado' })
   try {
