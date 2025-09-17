@@ -5,7 +5,7 @@ const transferService = require('../service/transferService');
 
 exports.transfers = (req, res) => {
   const { from, to, value } = req.body;
-  if (!from || !to || typeof value !== 'number') return res.status(400).json({ error: 'Usuário remetente ou destinatário não encontrado' })
+  if (!from || !to || typeof value !== 'number') return res.status(400).json({ error: 'Campos obrigatorios: from, to value' })
   try {
     const transfer = transferService.transfer({ from, to, value });
     res.status(201).json(transfer);
@@ -15,5 +15,12 @@ exports.transfers = (req, res) => {
 };
 
 exports.getTransfers = (req, res) => {
-  res.json(transferService.getTransfers());
+//res.json(transferService.getTransfers());
+//router.get('/', (req, res) => {
+  //res.json(transferService.listTransfers());
 };
+
+//module.exports = router;
+
+
+

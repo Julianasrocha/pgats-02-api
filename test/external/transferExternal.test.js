@@ -6,9 +6,9 @@ describe('Transfer Controller', () => {
     describe('POST /transfer', () => {
         it('Quando informo destinatarios inexistente recebo 400', async () => {
             const resposta = await request('http://localhost:3000')
-                .post('/transfer')
+                .post('/transfers')
                 .send({
-                    from: "juliana",
+                    from: "julianaaaa",
                     to: "pedro",
                     value: 100
 
